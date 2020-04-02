@@ -4,8 +4,16 @@ namespace App\Managers;
 
 use App\Models\Generate;
 
+/**
+ * Class GenerateUrlManager
+ * @package App\Managers
+ */
 class GenerateUrlManager
 {
+    /**
+     * @param string $link
+     * @return mixed
+     */
     public function generateLink(string $link)
     {
         $token = Generate::generateToken();
@@ -19,6 +27,10 @@ class GenerateUrlManager
         }
     }
 
+    /**
+     * @param string $token
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function redirect(string $token)
     {
         if($link = Generate::where('token', $token)->first()) {
