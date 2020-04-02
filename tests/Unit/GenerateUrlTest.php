@@ -24,7 +24,7 @@ class GenerateUrlTest extends TestCase
         $link = $this->generateManager->generateLink($this->linkToConvert);
 
         self::assertNotEmpty($link);
-        self::assertEquals(strlen($link->value), Generate::strlength);
+        self::assertEquals(strlen($link->value), Generate::LENGTH_TOKEN);
         self::assertEquals($link->origin, $this->linkToConvert);
     }
 
