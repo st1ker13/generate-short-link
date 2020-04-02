@@ -14,7 +14,7 @@ class GenerateUrlManager
         } else {
             return Generate::create([
                 'token' => $token,
-                'link' => $link
+                'origin' => $link
             ]);
         }
     }
@@ -22,7 +22,7 @@ class GenerateUrlManager
     public function redirect(string $token)
     {
         if($link = Generate::where('token', $token)->first()) {
-            $this->redirect($link->origin);
+            return redirect($link->origin);
         } else {
             throw new \DomainException(Generate::LINK_NOT_FOUND);
         }

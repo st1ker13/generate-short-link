@@ -33,9 +33,9 @@ class GenerateController extends Controller
     public function redirect(Request $request)
     {
         try {
-            $this->generateManager->redirect($request->token);
+            return $this->generateManager->redirect($request->token);
         } catch (\DomainException $exception) {
-            return redirect('/')->with('error', $exception->getMessage());
+            return redirect('/')->with('error_redirect', $exception->getMessage());
         }
     }
 }

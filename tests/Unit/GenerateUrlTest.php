@@ -2,36 +2,25 @@
 
 namespace Tests\Unit;
 
+use App\Managers\GenerateUrlManager;
+use App\Models\Generate;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class GenerateUrlTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseMigrations, DatabaseTransactions;
 
-    private $generateManager;
-    private $linkToConvert;
-
-    public function __construct(GenerateUrlManager $generateManager)
-    {
-        $this->linkToConvert = 'http://github.com/';
-        $this->generateManager = $generateManager;
-    }
+    private $linkToConvert = 'http://github.com/';
 
     public function testGenerateUrl()
     {
-
-        $link = $this->generateManager->generateLink($this->linkToConvert);
+        $generateManage = new GenerateUrlManager();
+        $link = $generateManage->generateLink($this->linkToConvert);
 
         self::assertNotEmpty($link);
-        self::assertEquals(strlen($link->value), Generate::LENGTH_TOKEN);
+        self::assertEquals(strlen($link->token), Generate::LENGTH_TOKEN);
         self::assertEquals($link->origin, $this->linkToConvert);
-    }
-
-    public function testCheckValue()
-    {
-        $link = Generate::create($this->linkToConvert);
-
-        self::expectExceptionMessage(Generate::DEFAULT_EXCEPTION_MESSAGE);
     }
 }

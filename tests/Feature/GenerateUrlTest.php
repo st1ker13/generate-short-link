@@ -2,21 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Managers\GenerateUrlManager;
+use App\Models\Generate;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class GenerateUrlTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseMigrations, DatabaseTransactions;
 
-    private $generateManager;
-    private $linkToConvert;
-
-    public function __construct(GenerateUrlManager $generateManager)
-    {
-        $this->linkToConvert = 'http://github.com/';
-        $this->generateManager = $generateManager;
-    }
+    private $linkToConvert = 'http://github.com/';
 
     public function testGenerateGet()
     {
@@ -36,11 +32,13 @@ class GenerateUrlTest extends TestCase
 
     public function testRedirect()
     {
-        $link = $this->generateManager->generateLink($this->linkToConvert);
-        $response = $this->get('/' . $link);
+        $generateManage = new GenerateUrlManager();
+        $link = $generateManage->generateLink($this->linkToConvert);
+
+        $response = $this->get('/' . $link->token);
 
         $response
-            ->assertStatus(301);
+            ->assertStatus(302);
     }
 
     public function testRedirectError()
@@ -49,6 +47,6 @@ class GenerateUrlTest extends TestCase
 
         $response
             ->assertRedirect('/')
-            ->assertSessionHas('error', Generate::LINK_NOT_FOUND);
+            ->assertSessionHas('error_redirect', Generate::LINK_NOT_FOUND);
     }
 }

@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'GenerateController@index');
+Route::post('/', 'GenerateController@store')->name('generate.store');
+Route::get('/{token}', 'GenerateController@redirect');
